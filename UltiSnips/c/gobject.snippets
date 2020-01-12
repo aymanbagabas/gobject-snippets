@@ -14,7 +14,7 @@ def magic_replace(snip, path, text):
     upper_case_name = fct_prefix.upper()
 
     l = fct_prefix.split('_')
-    l = map(unicode.title, l)
+    l = map(str.title, l)
     type_name = ''.join(l)
 
     l = upper_case_name.split('_')
