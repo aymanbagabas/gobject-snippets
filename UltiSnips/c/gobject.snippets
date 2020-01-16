@@ -133,7 +133,12 @@ result = '''
  * Since: UNRELEASED
  */
 
-G_DEFINE_TYPE ($ObjectType, $fct_prefix, G_TYPE_OBJECT)
+struct _$ObjectTypePrivate
+{
+  gpointer badger;
+};
+
+G_DEFINE_TYPE_WITH_PRIVATE ($ObjectType, $fct_prefix, G_TYPE_OBJECT)
 
 enum
 {
@@ -149,11 +154,6 @@ enum
 
 static guint signals[LAST_SIGNAL];
 */
-
-struct _$ObjectTypePrivate
-{
-  gpointer badger;
-};
 
 static void
 $fct_prefix_get_property (GObject *object,
@@ -229,8 +229,6 @@ $fct_prefix_class_init (
   oclass->constructed = $fct_prefix_constructed;
   oclass->dispose = $fct_prefix_dispose;
   oclass->finalize = $fct_prefix_finalize;
-
-  g_type_class_add_private (klass, sizeof ($ObjectTypePrivate));
 }
 
 static void
