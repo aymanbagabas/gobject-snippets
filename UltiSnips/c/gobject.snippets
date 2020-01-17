@@ -163,8 +163,8 @@ $fct_prefix_get_property (GObject *object,
     GValue *value,
     GParamSpec *pspec)
 {
-  //$ObjectType *self = $UPPER_CASE_NAME (object);
-  //$ObjectTypePrivate *priv = $fct_prefix_get_instance_private (self);
+  $ObjectType *self = $UPPER_CASE_NAME (object);
+  $ObjectTypePrivate *priv = $fct_prefix_get_instance_private (self);
 
   switch (property_id)
     {
@@ -180,8 +180,8 @@ $fct_prefix_set_property (GObject *object,
     const GValue *value,
     GParamSpec *pspec)
 {
-  //$ObjectType *self = $UPPER_CASE_NAME (object);
-  //$ObjectTypePrivate *priv = $fct_prefix_get_instance_private (self);
+  $ObjectType *self = $UPPER_CASE_NAME (object);
+  $ObjectTypePrivate *priv = $fct_prefix_get_instance_private (self);
 
   switch (property_id)
     {
@@ -218,7 +218,8 @@ $fct_prefix_finalize (GObject *object)
 static void
 $fct_prefix_constructed (GObject *object)
 {
-  //$ObjectType *self = $UPPER_CASE_NAME (object);
+  $ObjectType *self = $UPPER_CASE_NAME (object);
+  $ObjectTypePrivate *priv = $fct_prefix_get_instance_private (self);
 
   void (*chain_up) (GObject *) =
       G_OBJECT_CLASS ($fct_prefix_parent_class)->constructed;
