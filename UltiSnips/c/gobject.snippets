@@ -53,22 +53,6 @@ typedef struct _$ObjectType $ObjectType;
 typedef struct _$ObjectTypeClass $ObjectTypeClass;
 typedef struct _$ObjectTypePrivate $ObjectTypePrivate;
 
-struct _$ObjectTypeClass
-{
-  /*<private>*/
-  GObjectClass parent_class;
-};
-
-struct _$ObjectType
-{
-  /*<private>*/
-  GObject parent;
-  $ObjectTypePrivate *priv;
-};
-
-GType $fct_prefix_get_type (void) G_GNUC_CONST;
-
-/* TYPE MACROS */
 #define $TYPE_MACRO \\
   ($fct_prefix_get_type ())
 #define $UPPER_CASE_NAME(obj) \\
@@ -89,6 +73,23 @@ GType $fct_prefix_get_type (void) G_GNUC_CONST;
   (G_TYPE_INSTANCE_GET_CLASS ((obj), \\
     $TYPE_MACRO, \\
     $ObjectTypeClass))
+
+struct _$ObjectTypeClass
+{
+  GObjectClass parent_class;
+
+  /* Padding for future expansion */
+  gpointer padding[12];
+};
+
+struct _$ObjectType
+{
+  GObject parent_instance;
+
+  $ObjectTypePrivate *priv;
+};
+
+GType $fct_prefix_get_type (void) G_GNUC_CONST;
 
 $ObjectType * $fct_prefix_new (void);
 
@@ -133,6 +134,18 @@ result = '''
  * Since: UNRELEASED
  */
 
+enum
+{
+  PROP_0,
+  N_PROPS
+};
+
+enum
+{
+  SIGNAL_0,
+  N_SIGNALS
+};
+
 struct _$ObjectTypePrivate
 {
   gpointer badger;
@@ -140,20 +153,9 @@ struct _$ObjectTypePrivate
 
 G_DEFINE_TYPE_WITH_PRIVATE ($ObjectType, $fct_prefix, G_TYPE_OBJECT)
 
-enum
-{
-  PROP_FIRST_PROP = 1,
-  N_PROPS
-};
+static GParamSpec *obj_properties[N_PROPS] = { NULL };
 
-/*
-enum
-{
-  LAST_SIGNAL
-};
-
-static guint signals[LAST_SIGNAL];
-*/
+static guint signals[N_SIGNALS] = { 0 };
 
 static void
 $fct_prefix_get_property (GObject *object,
@@ -162,6 +164,7 @@ $fct_prefix_get_property (GObject *object,
     GParamSpec *pspec)
 {
   //$ObjectType *self = $UPPER_CASE_NAME (object);
+  //$ObjectTypePrivate *priv = $fct_prefix_get_instance_private (self);
 
   switch (property_id)
     {
@@ -178,6 +181,7 @@ $fct_prefix_set_property (GObject *object,
     GParamSpec *pspec)
 {
   //$ObjectType *self = $UPPER_CASE_NAME (object);
+  //$ObjectTypePrivate *priv = $fct_prefix_get_instance_private (self);
 
   switch (property_id)
     {
@@ -188,19 +192,11 @@ $fct_prefix_set_property (GObject *object,
 }
 
 static void
-$fct_prefix_constructed (GObject *object)
-{
-  //$ObjectType *self = $UPPER_CASE_NAME (object);
-  void (*chain_up) (GObject *) =
-      ((GObjectClass *) $fct_prefix_parent_class)->constructed;
-
-  chain_up (object);
-}
-
-static void
 $fct_prefix_dispose (GObject *object)
 {
-  //$ObjectType *self = $UPPER_CASE_NAME (object);
+  $ObjectType *self = $UPPER_CASE_NAME (object);
+  $ObjectTypePrivate *priv = $fct_prefix_get_instance_private (self);
+
   void (*chain_up) (GObject *) =
       ((GObjectClass *) $fct_prefix_parent_class)->dispose;
 
@@ -210,9 +206,22 @@ $fct_prefix_dispose (GObject *object)
 static void
 $fct_prefix_finalize (GObject *object)
 {
-  //$ObjectType *self = $UPPER_CASE_NAME (object);
+  $ObjectType *self = $UPPER_CASE_NAME (object);
+  $ObjectTypePrivate *priv = $fct_prefix_get_instance_private (self);
+
   void (*chain_up) (GObject *) =
-      ((GObjectClass *) $fct_prefix_parent_class)->finalize;
+      G_OBJECT_CLASS ($fct_prefix_parent_class)->finalize;
+
+  chain_up (object);
+}
+
+static void
+$fct_prefix_constructed (GObject *object)
+{
+  //$ObjectType *self = $UPPER_CASE_NAME (object);
+
+  void (*chain_up) (GObject *) =
+      G_OBJECT_CLASS ($fct_prefix_parent_class)->constructed;
 
   chain_up (object);
 }
@@ -221,29 +230,31 @@ static void
 $fct_prefix_class_init (
     $ObjectTypeClass *klass)
 {
-  GObjectClass *oclass = G_OBJECT_CLASS (klass);
-  //GParamSpec *spec;
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  oclass->get_property = $fct_prefix_get_property;
-  oclass->set_property = $fct_prefix_set_property;
-  oclass->constructed = $fct_prefix_constructed;
-  oclass->dispose = $fct_prefix_dispose;
-  oclass->finalize = $fct_prefix_finalize;
+  object_class->get_property = $fct_prefix_get_property;
+  object_class->set_property = $fct_prefix_set_property;
+  object_class->constructed = $fct_prefix_constructed;
+  object_class->dispose = $fct_prefix_dispose;
+  object_class->finalize = $fct_prefix_finalize;
+
+  g_object_class_install_properties (object_class,
+      N_PROPS,
+      obj_properties);
 }
 
 static void
 $fct_prefix_init ($ObjectType *self)
 {
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self,
-      $TYPE_MACRO, $ObjectTypePrivate);
+  self->priv = $fct_prefix_get_instance_private (self);
 }
 
 $ObjectType *
 $fct_prefix_new (void)
 {
-  return g_object_new ($TYPE_MACRO,
-      NULL);
-}'''
+  return g_object_new ($TYPE_MACRO, NULL);
+}
+'''
 
 snip.rv = magic_replace(snip, path, result)
 `
