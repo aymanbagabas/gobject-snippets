@@ -89,7 +89,7 @@ struct _$ObjectType
   $ObjectTypePrivate *priv;
 };
 
-GType $fct_prefix_get_type (void) G_GNUC_CONST;
+GType $fct_prefix_get_type (void);
 
 $ObjectType * $fct_prefix_new (void);
 
@@ -163,8 +163,11 @@ $fct_prefix_get_property (GObject *object,
     GValue *value,
     GParamSpec *pspec)
 {
-  $ObjectType *self = $UPPER_CASE_NAME (object);
-  $ObjectTypePrivate *priv = $fct_prefix_get_instance_private (self);
+  $ObjectType *self;
+  $ObjectTypePrivate *priv;
+
+  self = $UPPER_CASE_NAME (object);
+  priv = $fct_prefix_get_instance_private ($UPPER_CASE_NAME (object));
 
   switch (property_id)
     {
@@ -180,8 +183,11 @@ $fct_prefix_set_property (GObject *object,
     const GValue *value,
     GParamSpec *pspec)
 {
-  $ObjectType *self = $UPPER_CASE_NAME (object);
-  $ObjectTypePrivate *priv = $fct_prefix_get_instance_private (self);
+  $ObjectType *self;
+  $ObjectTypePrivate *priv;
+
+  self = $UPPER_CASE_NAME (object);
+  priv = $fct_prefix_get_instance_private ($UPPER_CASE_NAME (object));
 
   switch (property_id)
     {
@@ -194,37 +200,37 @@ $fct_prefix_set_property (GObject *object,
 static void
 $fct_prefix_dispose (GObject *object)
 {
-  $ObjectType *self = $UPPER_CASE_NAME (object);
-  $ObjectTypePrivate *priv = $fct_prefix_get_instance_private (self);
+  $ObjectType *self;
+  $ObjectTypePrivate *priv;
 
-  void (*chain_up) (GObject *) =
-      ((GObjectClass *) $fct_prefix_parent_class)->dispose;
+  self = $UPPER_CASE_NAME (object);
+  priv = $fct_prefix_get_instance_private ($UPPER_CASE_NAME (object));
 
-  chain_up (object);
+  G_OBJECT_CLASS ($fct_prefix_parent_class)->dispose (object);
 }
 
 static void
 $fct_prefix_finalize (GObject *object)
 {
-  $ObjectType *self = $UPPER_CASE_NAME (object);
-  $ObjectTypePrivate *priv = $fct_prefix_get_instance_private (self);
+  $ObjectType *self;
+  $ObjectTypePrivate *priv;
 
-  void (*chain_up) (GObject *) =
-      G_OBJECT_CLASS ($fct_prefix_parent_class)->finalize;
+  self = $UPPER_CASE_NAME (object);
+  priv = $fct_prefix_get_instance_private ($UPPER_CASE_NAME (object));
 
-  chain_up (object);
+  G_OBJECT_CLASS ($fct_prefix_parent_class)->finalize (object);
 }
 
 static void
 $fct_prefix_constructed (GObject *object)
 {
-  $ObjectType *self = $UPPER_CASE_NAME (object);
-  $ObjectTypePrivate *priv = $fct_prefix_get_instance_private (self);
+  $ObjectType *self;
+  $ObjectTypePrivate *priv;
 
-  void (*chain_up) (GObject *) =
-      G_OBJECT_CLASS ($fct_prefix_parent_class)->constructed;
+  self = $UPPER_CASE_NAME (object);
+  priv = $fct_prefix_get_instance_private ($UPPER_CASE_NAME (object));
 
-  chain_up (object);
+  G_OBJECT_CLASS ($fct_prefix_parent_class)->constructed (object);
 }
 
 static void
