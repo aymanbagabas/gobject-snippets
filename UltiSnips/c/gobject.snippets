@@ -157,6 +157,12 @@ static GParamSpec *obj_properties[N_PROPS] = { NULL };
 
 static guint signals[N_SIGNALS] = { 0 };
 
+$ObjectType *
+$fct_prefix_new (void)
+{
+  return g_object_new ($TYPE_MACRO, NULL);
+}
+
 static void
 $fct_prefix_get_property (GObject *object,
     guint property_id,
@@ -254,12 +260,6 @@ static void
 $fct_prefix_init ($ObjectType *self)
 {
   self->priv = $fct_prefix_get_instance_private (self);
-}
-
-$ObjectType *
-$fct_prefix_new (void)
-{
-  return g_object_new ($TYPE_MACRO, NULL);
 }
 '''
 
